@@ -1,0 +1,76 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Robot.Bip.png" type="Texture" id=1]
+[ext_resource path="res://Dissolve.shader" type="Shader" id=2]
+
+[sub_resource type="OpenSimplexNoise" id=1]
+period = 48.6
+
+[sub_resource type="NoiseTexture" id=2]
+noise = SubResource( 1 )
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = ExtResource( 2 )
+shader_param/FlashState = 0.0
+shader_param/DissolveState = 1.0
+shader_param/BorderColor = Color( 0.351584, 0.124585, 0.63273, 1 )
+shader_param/BorderTicknes = 0.1
+shader_param/Noise = SubResource( 2 )
+
+[sub_resource type="Animation" id=4]
+resource_name = "Dissolving"
+length = 4.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("RobotBip:material:shader_param/DissolveState")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0 ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "Spown"
+length = 4.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("RobotBip:material:shader_param/DissolveState")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 1.0, 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("RobotBip:material:shader_param/BorderColor")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1.7, 3.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0.94902, 0.145098, 0.0352941, 1 ), Color( 0.0352941, 0.113725, 0.94902, 1 ) ]
+}
+
+[node name="World" type="Node2D"]
+
+[node name="RobotBip" type="Sprite" parent="."]
+material = SubResource( 3 )
+position = Vector2( 484.684, 267.667 )
+texture = ExtResource( 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Spown"
+anims/Dissolving = SubResource( 4 )
+anims/Spown = SubResource( 5 )
